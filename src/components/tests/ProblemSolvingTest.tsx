@@ -100,4 +100,25 @@ export const ProblemSolvingTest = () => {
         </div>
       )}
 
-     
+      {phase === 'pattern' && (
+        <div>
+          <h3 className="text-xl font-semibold mb-4">Pattern Completion</h3>
+          {/* Pattern completion implementation */}
+        </div>
+      )}
+
+      {phase === 'sequence' && (
+        <div>
+          <h3 className="text-xl font-semibold mb-4">Number Sequence</h3>
+          {/* Number sequence implementation */}
+        </div>
+      )}
+
+      <div className="bg-indigo-50 p-4 rounded-lg">
+        <p>Trail Making Score: {score.trail}</p>
+        <p>Pattern Score: {score.pattern}</p>
+        <p>Sequence Score: {score.sequence}</p>
+      </div>
+    </motion.div>
+  );
+};
