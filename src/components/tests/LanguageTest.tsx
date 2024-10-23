@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-const OBJECTS = ['clock', 'key', 'umbrella', 'flower', 'bicycle'];
+const OBJECTS = [
+  { name: 'clock', imageUrl: 'https://source.unsplash.com/400x300/?clock' },
+  { name: 'key', imageUrl: 'https://source.unsplash.com/400x300/?key' },
+  { name: 'umbrella', imageUrl: 'https://source.unsplash.com/400x300/?umbrella' },
+  { name: 'flower', imageUrl: 'https://source.unsplash.com/400x300/?flower' },
+  { name: 'bicycle', imageUrl: 'https://source.unsplash.com/400x300/?bicycle' },
+  { name: 'apple', imageUrl: 'https://www.jiomart.com/images/product/original/590004487/apple-indian-6-pcs-pack-approx-750-g-950-g-product-images-o590004487-p590004487-0-202203170227.jpg?im=Resize=(1000,1000)' },
+  { name: 'football', imageUrl: 'https://cdn.britannica.com/68/195168-050-BBAE019A/football.jpg' },
+];
+
 const SENTENCES = [
   'The sky is ___',
   'A dog likes to ___',
@@ -11,14 +20,14 @@ const SENTENCES = [
 export const LanguageTest = () => {
   const [phase, setPhase] = useState<'naming' | 'completion' | 'fluency'>('naming');
   const [currentItem, setCurrentItem] = useState(0);
-  const [userInput, setUserInput] = useState('');
+  const [userInput, setUser Input] = useState('');
   const [score, setScore] = useState({ naming: 0, completion: 0, fluency: 0 });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (phase === 'naming') {
-      if (userInput.toLowerCase() === OBJECTS[currentItem]) {
+      if (userInput.toLowerCase() === OBJECTS[currentItem].name) {
         setScore(prev => ({ ...prev, naming: prev.naming + 1 }));
       }
       if (currentItem < OBJECTS.length - 1) {
@@ -36,7 +45,7 @@ export const LanguageTest = () => {
       }
     }
 
-    setUserInput('');
+    setUser Input('');
   };
 
   return (
@@ -50,15 +59,16 @@ export const LanguageTest = () => {
           <h3 className="text-xl font-semibold mb-4">Object Naming</h3>
           <div className="text-center">
             <img
-              src={`https://source.unsplash.com/400x300/?${OBJECTS[currentItem]}`}
+              src={OBJECTS[currentItem].imageUrl}
               alt={`Name this object`}
               className="mx-auto rounded-lg mb-4"
+              onError={(e) => { e.currentTarget.src = 'path/to/fallback-image.jpg'; }} // Add a fallback image if needed
             />
             <form onSubmit={handleSubmit} className="space-y-4">
               <input
                 type="text"
                 value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
+                onChange={(e) => setUser Input(e.target.value)}
                 className="w-full p-3 border rounded-lg"
                 placeholder="Name this object"
               />
@@ -76,7 +86,7 @@ export const LanguageTest = () => {
             <input
               type="text"
               value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
+              onChange={(e) => setUser Input(e.target.value)}
               className="w-full p-3 border rounded-lg"
               placeholder="Complete the sentence"
             />
@@ -84,26 +94,6 @@ export const LanguageTest = () => {
           </form>
         </div>
       )}
-
-      {phase === 'fluency' && (
-        <div>
-          <h3 className="text-xl font-semibold mb-4">Verbal Fluency</h3>
-          <p className="mb-4">Generate words that start with the letter "S"</p>
-          <textarea
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            className="w-full p-3 border rounded-lg"
-            rows={4}
-            placeholder="Enter words separated by commas"
-          />
-        </div>
-      )}
-
-      <div className="bg-indigo-50 p-4 rounded-lg">
-        <p>Naming Score: {score.naming}</p>
-        <p>Completion Score: {score.completion}</p>
-        <p>Fluency Score: {score.fluency}</p>
-      </div>
     </motion.div>
   );
 };
